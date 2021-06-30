@@ -1,0 +1,113 @@
+import 'package:flutter/material.dart';
+import './question.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        accentColor: Colors.lightBlue[400],
+        scaffoldBackgroundColor: Colors.deepOrange[100],
+        primarySwatch: Colors.deepOrange,
+      ),
+      home: MyHomePage(title: 'Flutter Demo Home Page'),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  MyHomePage({Key? key, required this.title}) : super(key: key);
+
+  final String title;
+
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  int _counter = 0;
+
+  void _modCounter(int value) {
+    setState(() => _counter += value);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final lines = [
+      ['+10', 10],
+      ['+5', 5],
+      ['-5', -5],
+      ['-10', -10],
+    ];
+    return Scaffold(
+      appBar: AppBar(
+          // title: Text(widget.title),
+
+          title: Text(
+        'Absolute Total Counter',
+        textAlign: TextAlign.center,
+      )),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Question(
+              'Click to count how many times you have clicked',
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Spacer(),
+                ElevatedButton(
+                    onPressed: () => _modCounter(1), child: Icon(Icons.add)),
+                Spacer(),
+                Text(
+                  '|$_counter|',
+                  style: Theme.of(context).textTheme.headline4,
+                ),
+                Spacer(),
+                ElevatedButton(
+                    onPressed: () => _modCounter(-1),
+                    child: Icon(Icons.remove)),
+                Spacer(),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(18.0),
+                  child: Container(
+                    width: 278,
+                    child: ElevatedButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.pink)),
+                        onPressed: () => setState(() => _counter = 0),
+                        child: Text('Reset')),
+                  ),
+                )
+              ],
+            ),
+            ...lines.map((line) => ElevatedButton(
+                child: Text((line[0] as String)),
+                onPressed: () {
+                  _modCounter(line[1] as int);
+                }))
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => setState(() => _counter = 0),
+        tooltip: 'Increment',
+        child: Icon(Icons.delete),
+      ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
