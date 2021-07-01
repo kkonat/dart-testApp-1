@@ -6,4 +6,4 @@ learning Flutter project.
 
 Testing various options on a simple counter app
 
-!(https://github.com/kkonat/dart-testApp-1/img/scr.png)
+![screenshot](https://github.com/kkonat/dart-testApp-1/blob/main/img/scr.png)
