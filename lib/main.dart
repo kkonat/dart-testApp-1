@@ -51,7 +51,6 @@ class _MyHomePageState extends State<MyHomePage> {
           FlutterRingtonePlayer.playNotification();
         }
       });
-      print("Start timer play");
     }
   }
 
