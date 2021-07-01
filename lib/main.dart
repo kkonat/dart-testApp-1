@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import './question.dart';
 
 void main() {
@@ -32,9 +35,38 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  Timer? _timer;
 
   void _modCounter(int value) {
     setState(() => _counter += value);
+  }
+
+  void _startTimer() {
+    if (_timer == null) {
+      _timer = new Timer.periodic(new Duration(milliseconds: 1000), (t) {
+        _modCounter(-1);
+        if (_counter == 0) {
+          _timer!.cancel();
+          _timer = null;
+          FlutterRingtonePlayer.playNotification();
+        }
+      });
+      print("Start timer play");
+    }
+  }
+
+  void _stopTimer() {}
+
+  @override
+  void initState() {
+    print("initState");
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    if (_timer != null) _timer!.cancel();
+    super.dispose();
   }
 
   @override
@@ -58,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Question(
-              'Click to count how many times you have clicked',
+              'Click to count how many times you have clicked ',
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -95,6 +127,16 @@ class _MyHomePageState extends State<MyHomePage> {
                 )
               ],
             ),
+            ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.blue)),
+                onPressed: () => _startTimer(),
+                child: Text('* START *')),
+            ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.green)),
+                onPressed: () => _stopTimer(),
+                child: Text('STOP')),
             ...lines.map((line) => ElevatedButton(
                 child: Text((line[0] as String)),
                 onPressed: () {
